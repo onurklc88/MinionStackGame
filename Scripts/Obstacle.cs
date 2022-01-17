@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-  //
+    //
+    private Animator anim;
     public GameObject GOScreen;
     private gameOverScreen GOScript;
-
+    
     void Start()
     {
-      
+        anim = GetComponent<Animator>();
     }
 
    
@@ -31,12 +32,13 @@ public class Obstacle : MonoBehaviour
             {
                 ComboStackBar.effectScript.wholeStack(-1f);
             }
+
             
-            Destroy(obstacle.gameObject);
+
+             Destroy(obstacle.gameObject, 0.3f);
        
         }
-        
-           
+
         
 
         if (obstacle.gameObject.tag == "Player")
@@ -49,7 +51,12 @@ public class Obstacle : MonoBehaviour
 
         }
 
-    }
+
+
+       
+
+
+        }
 
     
 

@@ -28,7 +28,7 @@ public class FinalState : MonoBehaviour
         if(other.gameObject.layer == 6)
         {
             //skor yazdýrýrken cube layerý triggerý tetiklerse total pointe eklettim.
-            GOScript.TotalPoints(1f);
+            GOScript.TotalPoints(0.5f);
              Destroy(other.gameObject);
 
         }

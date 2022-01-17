@@ -6,15 +6,19 @@ using UnityEngine;
 public class CharacterControllerScript : MonoBehaviour
 {
 
-    
+    //
     public float speed = 3f;
     public float jumpForce = 10.0f;
     public bool canJump;
+    public bool minionTaken;
    
     public Rigidbody rb;
     private Animator animator;
     public Transform parents;
+  
 
+
+   
 
     void Start()
     {
@@ -27,6 +31,7 @@ public class CharacterControllerScript : MonoBehaviour
     {
         playerMovement();
         StuckFix();
+        isPlayerGrounded();
     }
 
    
@@ -70,16 +75,20 @@ public class CharacterControllerScript : MonoBehaviour
         //karakterin kendi yükseliðinden büyük objeleri zýplamadan almasýný istemediðimden karakterin merkezinden ray yolladým
         if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z), transform.forward, out hit, 0.8f))
         {
-
+            
             //ilk önce en üstteki kutumu onu denetletiyorum
             if (hit.transform.gameObject.tag == "TopPoint")
             {
+               
+                animator.SetBool("isJumping", false);
+              
                 Destroy(hit.transform.gameObject);
             }
 
             //eðer ray'in çarptýðý obje en üstteki kutu deðilse en üstüyle beraber destroyluyorum
             if (hit.transform.gameObject.layer == 6)
             {
+             
                 Destroy(hit.transform.parent.gameObject);
                
             }
@@ -101,23 +110,53 @@ public class CharacterControllerScript : MonoBehaviour
         if (cube.gameObject.CompareTag("TopPoint"))
         {
 
-           //Transform ve objenin bizle gelebilmesi için child yaptýðým atamalar
+
+
+            
+            animator.SetBool("balance", true);
+            //Transform ve objenin bizle gelebilmesi için child yaptýðým atamalar
             cube.gameObject.transform.position = new Vector3(transform.position.x, cube.gameObject.transform.position.y, -10);
             cube.gameObject.transform.parent = parents;
            
             //ardýndan karakterin yükseklik atamalarý
             transform.position = new Vector3(transform.position.x, transform.position.y + cube.gameObject.transform.position.y, -10);
-            
-            //trigger olarak kullandýðým top pointi sýradan bir child haline dönüþtürdüm
+
+        
+             //trigger olarak kullandýðým top pointi sýradan bir child haline dönüþtürdüm
             cube.gameObject.tag = "Untagged";
             cube.gameObject.GetComponent<BoxCollider>().isTrigger = false;
+
+         
+
+        }
+
+       
+
+    }
+
+    public void isPlayerGrounded()
+    {
+        RaycastHit asd;
+
+        if (Physics.Raycast(transform.position, -transform.up, out asd, 1f))
+        {
+            //Debug.Log("player" + asd.transform.gameObject.name);
+        }
+        //eðer oyuncu yere küp aldýktan sonra tekrar yere düþerse balance animasyonunu kapatýyorum
+        if (asd.transform.gameObject.tag == "Ground")
+        {
+
+            animator.SetBool("balance", false);
+
 
 
         }
 
-        
 
     }
+
+
+
 
     private IEnumerator Canjump()
     {

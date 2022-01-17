@@ -105,7 +105,7 @@ public class jumpPoint : MonoBehaviour
         yield return new WaitForSeconds(1f);
         gameObject.GetComponent<jumpPoint>().enabled = false;
         maxStackImage.SetActive(false);
-
+        Destroy(gameObject);
 
     }
 }
