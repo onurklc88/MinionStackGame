@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#pragma warning disable 0649
 
 public class MinionAnimationController : MonoBehaviour
 {
@@ -11,63 +12,72 @@ public class MinionAnimationController : MonoBehaviour
     public bool minionIsTaken = false;
 
 
+
     public static MinionAnimationController minionScript;
 
-    
+
     void Start()
     {
-        minionScript = this;
+         minionScript = this;
         anim = GetComponent<Animator>();
-    }
 
+
+        
+
+    }
    
     void Update()
     {
-
+        
         bottomMinionCheck();
         animationController();
         StuckBlock();
-
-
-
-       
-
+      
 
     }
 
-    
+
 
     public void bottomMinionCheck()
     {
 
 
+                 RaycastHit rayHit;
+
+            if (Physics.Raycast(transform.position, -transform.up, out rayHit, 0.5f))
+            {
+                //Debug.Log(rayHit.transform.gameObject.name);
+
+
+            }
+
+        if (rayHit.transform == null)
+        {
+            return;
+        }
+
+        //minion'dan gönderdiðim ray ground'a çarpýp çarpmadýðýný kontrol ediyorum
+        if (rayHit.transform.gameObject.tag == "Ground")
+
+            {
+
+                isGrounded = true;
+
+            }
+            else
+            {
+                isGrounded = false;
+
+            }
+
+           
+
+
+        }
        
 
-        RaycastHit rayHit;
 
-        if(Physics.Raycast(transform.position, -transform.up, out rayHit, 0.5f))
-        {
-            //Debug.Log(rayHit.transform.gameObject.name);
-         
-
-        }
-     
-        //minion'dan gönderdiðim ray ground'a çarpýp çarpmadýðýný kontrol ediyorum
-         if (rayHit.transform.gameObject.tag == "Ground")
-        {
-           
-            isGrounded = true;
-
-          }
-        else
-        {
-            isGrounded = false;
-           
-        }
-        
-        
-
-    }
+    
 
   
 
@@ -83,13 +93,19 @@ public class MinionAnimationController : MonoBehaviour
             Debug.Log(StuckBlocker.transform.gameObject.name);
         }
 
+        if (StuckBlocker.transform == null)
+        {
+            return;
+        }
+
+
         if (StuckBlocker.transform.gameObject.layer == 6)
         {
 
             StuckBlocker.transform.gameObject.SetActive(false);
 
         }
-
+        
         if(StuckBlocker.transform.gameObject.name == "minion"){
 
             StuckBlocker.transform.gameObject.SetActive(false);

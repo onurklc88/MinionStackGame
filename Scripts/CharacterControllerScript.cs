@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+#pragma warning disable 0219
 
 public class CharacterControllerScript : MonoBehaviour
 {
@@ -134,7 +134,7 @@ public class CharacterControllerScript : MonoBehaviour
 
     }
 
-    public void isPlayerGrounded()
+    private void isPlayerGrounded()
     {
         RaycastHit asd;
 
@@ -142,16 +142,18 @@ public class CharacterControllerScript : MonoBehaviour
         {
             //Debug.Log("player" + asd.transform.gameObject.name);
         }
+        if (asd.transform == null)
+        {
+            return;
+        }
         //eðer oyuncu yere küp aldýktan sonra tekrar yere düþerse balance animasyonunu kapatýyorum
         if (asd.transform.gameObject.tag == "Ground")
         {
 
             animator.SetBool("balance", false);
 
-
-
         }
-
+      
 
     }
 
